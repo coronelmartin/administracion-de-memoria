@@ -65,7 +65,7 @@
                 <h2>Módulo 2: Afirmaciones de Verdadero o Falso</h2>
                 <p class="section-desc">Selecciona la opción correcta. Si marcas "Falso", se desplegará una caja obligatoria para justificar técnicamente tu decisión.</p>
                 
-                <div class="capture-zone" id="capture-vf">
+                                <div class="capture-zone" id="capture-vf">
                     <h2 class="print-title">📋 Respuestas - Evaluación de Verdadero o Falso</h2>
                     
                     <!-- Fila 1 -->
@@ -97,7 +97,38 @@
                         </div>
                         <textarea id="justify-3" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
                     </div>
+
+                    <!-- Fila 4 (Nueva) -->
+                    <div class="vf-row" data-id="4">
+                        <div class="vf-question">4. La memoria caché L1 es de mayor capacidad de almacenamiento en megabytes (MB) que la memoria caché L3.</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-4" value="V" onclick="toggleJustification(4, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-4" value="F" onclick="toggleJustification(4, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-4" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
+
+                    <!-- Fila 5 (Nueva) -->
+                    <div class="vf-row" data-id="5">
+                        <div class="vf-question">5. El Modelo del Conjunto de Trabajo (Working Set Model) se utiliza para predecir y mitigar el fenómeno de hiperpaginación (Thrashing).</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-5" value="V" onclick="toggleJustification(5, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-5" value="F" onclick="toggleJustification(5, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-5" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
+
+                    <!-- Fila 6 (Nueva) -->
+                    <div class="vf-row" data-id="6">
+                        <div class="vf-question">6. En un esquema de particionamiento dinámico pura, la fragmentación interna es el problema principal que colapsa el espacio.</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-6" value="V" onclick="toggleJustification(6, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-6" value="F" onclick="toggleJustification(6, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-6" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
                 </div>
+
 
                 <div class="action-bar">
                     <button onclick="saveAsImage('capture-vf', 'Verdadero_Falso_Memoria.png')" class="btn-save">💾 Guardar como Imagen</button>
