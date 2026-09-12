@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Evaluación - Gestión de Memoria</title>
+    <link rel="stylesheet" href="evaluacion.css">
+</head>
+<body>
+    <!-- Contenedor de Alertas Modernas -->
+    <div id="toast-container"></div>
+
+    <div class="eval-layout">
+        <!-- Encabezado de la página -->
+        <header class="eval-header">
+            <div class="header-content">
+                <span class="header-icon">📝</span>
+                <div>
+                    <h1>Panel de Evaluaciones Académicas</h1>
+                    <p>Completa los módulos de desarrollo y afirmaciones. Guarda tus respuestas en imágenes para tus entregas.</p>
+                </div>
+            </div>
+            <a href="index.html" class="btn-back">⬅️ Volver al Simulador Principal</a>
+        </header>
+
+        <main class="eval-main">
+            <!-- BLOQUE 1: CUESTIONARIO ESCRITO -->
+            <section class="eval-section">
+                <h2>Módulo 1: Cuestionario de Desarrollo Teórico</h2>
+                <p class="section-desc">Responde de forma analítica cada una de las siguientes preguntas del temario de sistemas operativos.</p>
+                
+                <div class="capture-zone" id="capture-cuestionario">
+                    <h2 class="print-title">📋 Respuestas - Cuestionario de Desarrollo (Administración de Memoria)</h2>
+                    
+                    <div class="question-group">
+                        <label>1. ¿Cómo soluciona el sistema operativo la fragmentación externa mediante software?</label>
+                        <textarea class="essay-input" placeholder="Escribe tu respuesta analítica aquí..."></textarea>
+                    </div>
+                    <div class="question-group">
+                        <label>2. Explica la diferencia operativa entre un fallo de página y un fallo de segmentación.</label>
+                        <textarea class="essay-input" placeholder="Escribe tu respuesta analítica aquí..."></textarea>
+                    </div>
+                    <div class="question-group">
+                        <label>3. ¿Por qué la Anomalía de Belady afecta exclusivamente al criterio de reemplazo FIFO?</label>
+                        <textarea class="essay-input" placeholder="Escribe tu respuesta analítica aquí..."></textarea>
+                    </div>
+                    <div class="question-group">
+                        <label>4. Describe la función que cumple el parámetro delta (Δ) dentro del Modelo de Conjunto de Trabajo (Working Set).</label>
+                        <textarea class="essay-input" placeholder="Escribe tu respuesta analítica aquí..."></textarea>
+                    </div>
+                    <div class="question-group">
+                        <label>5. ¿Cuál es el impacto en el rendimiento si un procesador experimenta un 'TLB Miss'?</label>
+                        <textarea class="essay-input" placeholder="Escribe tu respuesta analítica aquí..."></textarea>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button onclick="saveAsImage('capture-cuestionario', 'Cuestionario_Desarrollo_Memoria.png')" class="btn-save">💾 Guardar como Imagen</button>
+                    <button onclick="clearContainer('capture-cuestionario')" class="btn-clear">🗑️ Limpiar Campos</button>
+                </div>
+            </section>
+
+            <!-- BLOQUE 2: VERDADERO O FALSO -->
+            <section class="eval-section">
+                <h2>Módulo 2: Afirmaciones de Verdadero o Falso</h2>
+                <p class="section-desc">Selecciona la opción correcta. Si marcas "Falso", se desplegará una caja obligatoria para justificar técnicamente tu decisión.</p>
+                
+                <div class="capture-zone" id="capture-vf">
+                    <h2 class="print-title">📋 Respuestas - Evaluación de Verdadero o Falso</h2>
+                    
+                    <!-- Fila 1 -->
+                    <div class="vf-row" data-id="1">
+                        <div class="vf-question">1. La paginación pura sufre de fragmentación externa constante debido a los marcos de tamaño variable.</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-1" value="V" onclick="toggleJustification(1, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-1" value="F" onclick="toggleJustification(1, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-1" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
+
+                    <!-- Fila 2 -->
+                    <div class="vf-row" data-id="2">
+                        <div class="vf-question">2. El algoritmo Worst-Fit busca dejar el residuo más grande para que pueda ser aprovechado por otros procesos.</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-2" value="V" onclick="toggleJustification(2, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-2" value="F" onclick="toggleJustification(2, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-2" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
+
+                    <!-- Fila 3 -->
+                    <div class="vf-row" data-id="3">
+                        <div class="vf-question">3. El búfer TLB almacena las páginas completas que han sido desalojadas al espacio de SWAP (Almacenamiento secundario).</div>
+                        <div class="vf-controls">
+                            <label class="radio-label"><input type="radio" name="vf-3" value="V" onclick="toggleJustification(3, false)"> Verdadero</label>
+                            <label class="radio-label"><input type="radio" name="vf-3" value="F" onclick="toggleJustification(3, true)"> Falso</label>
+                        </div>
+                        <textarea id="justify-3" class="justify-box" placeholder="Justifica por qué es falso (Obligatorio)..."></textarea>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button onclick="saveAsImage('capture-vf', 'Verdadero_Falso_Memoria.png')" class="btn-save">💾 Guardar como Imagen</button>
+                    <button onclick="clearContainer('capture-vf')" class="btn-clear">🗑️ Limpiar Campos</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="evaluacion.js"></script>
+</body>
+</html>
