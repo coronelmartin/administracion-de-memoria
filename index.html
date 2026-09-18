@@ -3,255 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enciclopedia Visual y Simulador de Gestión de Memoria</title>
+    <title>Enciclopedia Visual y Simulador de Gestión de Memoria Interactivo</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="utic.png">
 </head>
 <body>
     <div id="toast-container"></div>
     <div class="container">
-        <!-- Menú de Navegación Lateral -->
+        <!-- Menú de Navegación Lateral Expandido -->
         <nav class="sidebar">
             <div class="sidebar-header">
                 <div class="logo-icon">🧠</div>
                 <h2>Sistemas Operativos</h2>
             </div>
             <ul>
-                <li><a href="#requisitos" class="nav-link active">1. Requisitos de Gestión</a></li>
-                <li><a href="#particionamiento" class="nav-link">2. Particionamiento</a></li>
+                <li><a href="#requisitos" class="nav-link active">1. Requisitos y Gestión</a></li>
+                <li><a href="#particionamiento" class="nav-link">2. Particiones y Swap</a></li>
                 <li><a href="#pag-seg" class="nav-link">3. Paginación y Seg.</a></li>
                 <li><a href="#memoria-virtual" class="nav-link">4. Memoria Virtual</a></li>
-                <li><a href="#disenos-avanzados" class="nav-link">5. Diseños Avanzados</a></li>
+                <li><a href="#algoritmos-reemplazo" class="nav-link">5. Reemplazo Páginas</a></li>
+                <li><a href="#disenos-avanzados" class="nav-link">6. Diseños Avanzados</a></li>
                 <li><a href="#simulador" class="nav-link highlight">🖥️ Simulador RAM Pro</a></li>
                 <li><a href="#quiz-pestaña" class="nav-link active-quiz">🏆 Quiz de Niveles</a></li>
-                <li><a href="evaluacion.html" style="border-left: 4px solid #a855f7; color: #e9d5ff; font-weight: bold;">📝 Ir a Cuestionarios</a></li>
             </ul>
+
         </nav>
 
-        <!-- Contenido Principal -->
+        <!-- Contenido Principal Estructurado Académicamente -->
         <main class="content">
-            <!-- SECCIÓN 1: CONCEPTO Y REQUISITOS -->
+            
+            <!-- SECCIÓN 1: GESTIÓN DE MEMORIA Y REQUISITOS -->
             <section id="requisitos" class="section active-section">
-                <h1>Administración de Memoria</h1>
-                <div class="info-block border-cyan" style="margin-bottom: 2.5rem; background-color: #111827;">
-                    <h3>💡 ¿Qué es la Administración de Memoria?</h3>
-                    <p style="margin-bottom: 0; font-size: 1.15rem; color: var(--text-main); line-height: 1.7;">
-                        La <strong>Administración de Memoria</strong> es el subsistema del sistema operativo encargado de gestionar la memoria principal (RAM) de la computadora. Su propósito primordial es asignar porciones de espacio a los programas cuando lo solicitan para su ejecución, proteger la información de cada hilo de ejecución y liberar dichos recursos cuando los procesos finalizan, optimizando el rendimiento general del hardware para evitar cuellos de botella.
+                <h1>1. Gestión de Memoria y Requisitos de Sistema</h1>
+                <p class="subtitle">Conceptos fundamentales sobre cómo el sistema operativo controla el recurso de almacenamiento primario y los pilares para un entorno seguro.</p>
+                
+                <div class="info-block border-cyan" style="margin-bottom: 2rem; background-color: #111827;">
+                    <h3>🧠 Concepto Central: Gestión de Memoria</h3>
+                    <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-main);">
+                        La <strong>Gestión de Memoria</strong> es una de las tareas más críticas del sistema operativo. Consiste en la administración y control del vector plano de bytes que conforma la memoria principal (RAM). Su objetivo es proveer abstracciones seguras a los procesos, asignar dinámicamente bloques de direcciones a los programas en ejecución, proteger los espacios de trabajo y liberar el hardware eficientemente para evitar cuellos de botella.
                     </p>
                 </div>
-                <h2>Requisitos de Gestión de Memoria</h2>
-                <p class="subtitle">Para garantizar un entorno multitarea seguro, estable y coordinado, el administrador de memoria debe cumplir estrictamente con cinco pilares fundamentales:</p>
+
+                <div class="info-block border-blue" style="margin-bottom: 2rem; background-color: #111827;">
+                    <h3>🧱 Administración Básica de la Memoria</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+                        En los sistemas primitivos (monoprogramación), la administración básica operaba dividiendo la RAM en solo dos regiones: una fija para el núcleo del sistema operativo y el resto absoluto para el único programa del usuario corriendo en ese instante. En los sistemas modernos (multitarea), la administración básica coordina el espacio de direcciones lógicas de múltiples procesos simultáneos, valiéndose de hardware específico para realizar mapeos veloces y proteger la estabilidad del Kernel.
+                    </p>
+                </div>
+
+                <h2>Pilares y Requisitos de Gestión</h2>
                 <div class="grid">
-                    <div class="card"><h3>🔄 Relocalización</h3><p>Los programas listos para ejecutar se cargan dinámicamente en cualquier espacio libre de la RAM. El sistema mapea las direcciones lógicas a físicas en tiempo de ejecución de forma totalmente transparente.</p></div>
-                    <div class="card"><h3>🛡️ Protección</h3><p>Mecanismo basado en hardware que deniega a un proceso el acceso a marcos de memoria asignados a otros hilos o al núcleo (<em>kernel</em>) del sistema operativo sin autorización previa.</p></div>
-                    <div class="card"><h3>🤝 Compartición</h3><p>Flexibilidad controlada que permite a procesos independientes acceder a una misma región de memoria física, evitando duplicar código al utilizar librerías compartidas (como archivos .dll).</p></div>
-                    <div class="card"><h3>🧱 Organización Lógica</h3><p>El procesador y el software ven la memoria como una colección de módulos o segmentos con distintos atributos de acceso y ejecución, en lugar de un vector plano de bytes.</p></div>
-                    <div class="card"><h3>🔌 Organización Física</h3><p>Coordinación continua y transparente para transferir bloques de datos e instrucciones entre la RAM de alta velocidad y los sistemas de almacenamiento secundario (Discos o SSDs).</p></div>
+                    <div class="card">
+                        <h3> Filas de Relocalización</h3>
+                        <p>Los procesos listos para ejecutarse deben poder cargarse en cualquier espacio disponible de la RAM. El sistema debe traducir dinámicamente las direcciones de código en tiempo de ejecución de manera transparente para el usuario.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🛡️ Mecanismos de Protección</h3>
+                        <p>Aislamiento total por hardware (registros base y límite). Impide estrictamente que un proceso de usuario acceda, lea o modifique marcos de memoria pertenecientes a otro programa o a los módulos reservados del núcleo.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🤝 Compartición Controlada</h3>
+                        <p>Capacidad flexible que permite a dos o más procesos independientes compartir el acceso a una misma región física de la RAM (como bibliotecas dinámicas .DLL), optimizando el uso de espacio sin vulnerar la seguridad.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🧱 Organización Lógica</h3>
+                        <p>El sistema operativo y la CPU visualizan la memoria como una colección de módulos independientes con distintos atributos (solo lectura, ejecución, datos) adaptándose a la estructura natural de los programas.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🔌 Organización Física</h3>
+                        <p>Coordinación de bajo nivel para transferir de manera fluida y automatizada los bloques de datos entre la RAM de alta velocidad y el almacenamiento secundario persistente.</p>
+                    </div>
                 </div>
             </section>
 
-                        <!-- SECCIÓN 2: PARTICIONAMIENTO DE LA MEMORIA -->
+            <!-- SECCIÓN 2: PARTICIONAMIENTO E INTERCAMBIO -->
             <section id="particionamiento" class="section">
-                <h1>2. Particionamiento de la Memoria</h1>
-                <p class="subtitle">Estrategias clásicas de división de la memoria para alojar múltiples procesos simultáneos y los problemas de espacio que generan.</p>
+                <h1>2. Particionamiento de la Memoria e Intercambio</h1>
+                <p class="subtitle">Estrategias clásicas de división de la memoria para lograr la multiprogramación contigua.</p>
                 
-                <!-- Gráficos e Infografías Visuales -->
+                <!-- Gráficos Visuales de Fragmentación -->
                 <div class="visual-gallery">
                     <div class="graphic-box">
-                        <h4>FRAGMENTACIÓN INTERNA (PARTICIONES FIJAS)</h4>
+                        <h4>Fragmentación Interna (Particiones Fijas)</h4>
                         <div class="fragmentation-graphic fixed-map">
-                            <div class="block-chunk occupied w-60">Proceso (12 MB)<br><span style="font-size: 0.75rem; opacity: 0.8;">Ocupado</span></div>
-                            <div class="block-chunk wasted w-40">Espacio Desperdiciado (8 MB)<br><span style="font-size: 0.75rem; opacity: 0.8;">Fragmentación Interna</span></div>
+                            <div class="block-chunk occupied w-60">Proceso (12 MB)</div>
+                            <div class="block-chunk wasted w-40">Desperdiciado (8 MB) <br><small>Frag. Interna</small></div>
                         </div>
                     </div>
                     <div class="graphic-box">
-                        <h4>FRAGMENTACIÓN EXTERNA (PARTICIONES DINÁMICAS)</h4>
+                        <h4>Fragmentación Externa (Particiones Dinámicas)</h4>
                         <div class="fragmentation-graphic dynamic-map">
-                            <div class="block-chunk occupied w-40">Proceso Activo (50 MB)</div>
-                            <div class="block-chunk gap-hole w-60">Hueco Inutilizado Libre<br><span style="font-size: 0.75rem; opacity: 0.8;">Fragmentación Externa</span></div>
+                            <div class="block-chunk occupied w-40">Proceso Activo</div>
+                            <div class="block-chunk gap-hole w-60">Hueco Libre Separado <br><small>Frag. Externa</small></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TEORÍA ACADÉMICA RESTAURADA -->
-                <h2 class="subheading">Conceptos y Tipos de Particionamiento</h2>
-                <div class="split" style="margin-bottom: 2rem;">
-                    <div class="info-block border-blue" style="background-color: #111827;">
+                <div class="grid">
+                    <div class="card">
                         <h3>🧱 Particionamiento Estático (Fijo)</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-                            La memoria RAM se divide en regiones de **tamaño fijo e invariable** al inicializar el sistema operativo. Las particiones pueden ser todas del mismo tamaño o de tamaños diferentes.
-                        </p>
-                        <div class="concept-box" style="border-left: 3px solid var(--danger);">
-                            <strong>Problema principal: Fragmentación Interna.</strong> Ocurre cuando un proceso es más pequeño que la partición asignada; el espacio sobrante dentro de ese bloque queda bloqueado y desperdiciado, ya que ningún otro programa puede usarlo.
-                        </div>
+                        <p>La RAM se divide en bloques fijos desde el arranque del sistema. Genera <strong>Fragmentación Interna</strong> cuando un proceso es más chico que el tamaño de la partición asignada, bloqueando el espacio residual.</p>
                     </div>
-                    <div class="info-block border-cyan" style="background-color: #111827;">
-                        <h3>⚡ Particionamiento Dinámico (Variable)</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-                            Las particiones se crean de forma exacta y con el **tamaño justo** que necesita cada proceso al cargarse en la RAM. Al inicio no hay desperdicio de espacio, ya que la memoria se moldea según la demanda.
-                        </p>
-                        <div class="concept-box" style="border-left: 3px solid var(--warning);">
-                            <strong>Problema principal: Fragmentación Externa.</strong> Conforme los procesos terminan y abandonan la RAM, dejan pequeños huecos libres dispersos por toda la memoria. Si llega un proceso grande, no podrá alojarse aunque la suma de todos los huecos sea suficiente, porque el espacio libre no está contiguo.
-                        </div>
+                    <div class="card">
+                        <h3>⚡ Particionamiento Dinámico</h3>
+                        <p>Las regiones se moldean con la medida exacta requerida por el proceso al cargarse. Con el tiempo, la entrada y salida de programas deja pequeños espacios vacíos dispersos, provocando <strong>Fragmentación Externa</strong>.</p>
                     </div>
                 </div>
 
-                <!-- Solución al problema -->
                 <div class="info-block border-cyan" style="margin-top: 1.5rem;">
-                    <h3>⚙️ ¿Cómo soluciona el Sistema Operativo la Fragmentación Externa?</h3>
+                    <h3>🔀 Mecanismo de Intercambio (Swapping)</h3>
                     <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
-                        La técnica principal por software se denomina <strong>Compactación de Memoria (o Desfragmentación)</strong>. Consiste en suspender temporalmente los programas, desplazar todos los procesos activos hacia un extremo de la RAM física para que queden agrupados de forma contigua, y unificar todos los pequeños huecos dispersos en un único bloque libre gigante al final de la memoria. *(Esta es la lógica exacta que puedes probar presionando el botón en nuestro simulador).*
+                        El <strong>Intercambio (Swapping)</strong> consiste en una técnica de administración avanzada donde el sistema operativo expulsa temporalmente un proceso completo que está inactivo o bloqueado de la memoria RAM principal hacia un espacio reservado del disco secundario (zona de SWAP). Al hacer esto, libera un bloque contiguo gigante para dar paso a un programa prioritario, volviendo a traer el proceso original a la RAM cuando este deba continuar su ejecución.
                     </p>
                 </div>
             </section>
 
-                        <!-- SECCIÓN 3: PAGINACIÓN DINÁMICA Y SEGMENTACIÓN -->
+                        <!-- SECCIÓN 3: PAGINACIÓN Y SEGMENTACIÓN INTERACTIVA -->
             <section id="pag-seg" class="section">
-                <h1>3. Paginación Dinámica y Segmentación</h1>
-                <p class="subtitle">Modelos modernos de gestión no contigua para eliminar las limitaciones de espacio físico plano y optimizar el uso de la RAM.</p>
+                <h1>3. Modelos No Contiguos: Paginación y Segmentación</h1>
+                <p class="subtitle">Estrategias modernas que rompen la necesidad de alojar los programas en bloques físicos continuos. ¡Haz clic en las tarjetas de abajo para simular una traducción de hardware!</p>
                 
-                <!-- Esquema Visual (Tu hermoso diagrama) -->
                 <div class="diagram-container">
-                    <h4>Esquema de Flujo y Traducción de la MMU</h4>
+                    <h4>Esquema de Flujo de Traducción de la MMU</h4>
                     <div class="mmu-graphic">
-                        <div class="mmu-box cpu-node">🖥️ CPU <br> <small>Dirección Lógica</small></div>
+                        <div class="mmu-box cpu-node" id="interactive-cpu">🖥️ CPU <br> <small>Dirección Lógica</small></div>
                         <div class="mmu-arrow">➡️</div>
-                        <div class="mmu-box mmu-node">🧠 MMU <br> <small>Tabla de Páginas</small></div>
+                        <div class="mmu-box mmu-node" id="interactive-mmu">🧠 MMU <br> <small>Tabla de Páginas</small></div>
                         <div class="mmu-arrow">➡️</div>
-                        <div class="mmu-box ram-node">💾 RAM Física <br> <small>Marcos Reales</small></div>
+                        <div class="mmu-box ram-node" id="interactive-ram">💾 RAM Física <br> <small>Marcos Reales</small></div>
                     </div>
                 </div>
 
-                <!-- Tabla Comparativa -->
-                <table style="margin-bottom: 2.5rem;">
+                <div class="grid">
+                    <div class="card" onclick="simulateMmuTranslation('Página lógica #4', 'Marco físico #29', 'success')" style="cursor: pointer; transition: transform 0.2s;">
+                        <h3>📄 Paginación (Simular Mapeo)</h3>
+                        <p>El espacio lógico del programa se rompe en bloques fijos llamados Páginas y la RAM real se divide en bloques idénticos llamados Marcos (Frames). La MMU distribuye las páginas en cualquier marco libre no consecutivo, eliminando la fragmentación externa. <strong>Haz clic aquí para ver cómo la MMU traduce una página a marco real.</strong></p>
+                    </div>
+                    <div class="card" onclick="simulateMmuTranslation('Segmento de Código [0x02]', 'Límite de RAM base [0x4F]', 'warning')" style="cursor: pointer; transition: transform 0.2s;">
+                        <h3>📐 Segmentación (Simular Mapeo)</h3>
+                        <p>Divide el programa basándose en su estructura y significado lógico (funciones, variables globales, código fuente). Cada Segmento mide exactamente lo que ocupa el módulo, sufriendo exclusivamente de fragmentación externa. <strong>Haz clic aquí para simular la carga y verificación de límites de un segmento lógico en la RAM.</strong></p>
+                    </div>
+                </div>
+
+                <table style="margin-top: 2rem;">
                     <thead><tr><th>Característica</th><th>Paginación</th><th>Segmentación</th></tr></thead>
                     <tbody>
-                        <tr><td><strong>Bloques de Memoria</strong></td><td>Tamaño fijo invariable (Páginas y Marcos).</td><td>Tamaño variable adaptado a la lógica del código.</td></tr>
-                        <tr><td><strong>Fragmentación Producida</strong></td><td>Únicamente interna (en el último marco del proceso).</td><td>Únicamente externa (pequeños huecos entre segmentos).</td></tr>
+                        <tr><td><strong>Naturaleza de los Bloques</strong></td><td>División física automática de tamaño fijo invariable.</td><td>División lógica por el compilador de tamaño variable.</td></tr>
+                        <tr><td><strong>Visibilidad del Programador</strong></td><td>Totalmente invisible y transparente.</td><td>Visible (se manejan tuplas de ID segmento y desplazamiento).</td></tr>
+                        <tr><td><strong>Fragmentación Asociada</strong></td><td>Únicamente fragmentación interna en el último marco.</td><td>Únicamente fragmentación externa entre segmentos dispersos.</td></tr>
                     </tbody>
                 </table>
-
-                                <!-- CONCEPTOS FUNDAMENTALES DEL MAPEO NO CONTIGUO -->
-                <h2 class="subheading">Conceptos Fundamentales del Mapeo No Contiguo</h2>
-                <div class="grid">
-                    <div class="card-mini" style="border-left: 3px solid var(--accent); background-color: #111827; padding: 1.5rem;">
-                        <h4>📄 Páginas vs. Marcos (Frames)</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
-                            El espacio de direcciones lógicas de un programa se divide en bloques de tamaño fijo llamados <strong>Páginas</strong>. Por otro lado, la memoria RAM física real se divide en bloques del mismo tamaño exacto llamados <strong>Marcos de Página</strong>. Una página lógica puede guardarse en cualquier marco físico libre, sin importar si están separados.
-                        </p>
-                    </div>
-                    <div class="card-mini" style="border-left: 3px solid var(--success); background-color: #111827; padding: 1.5rem;">
-                        <h4>🗂️ La Tabla de Páginas</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
-                            Es la estructura de datos interna que mantiene el sistema operativo en la RAM por cada proceso. Funciona como un mapa o índice que le dice a la MMU exactamente en qué <strong>Marco físico real</strong> se encuentra guardada cada <strong>Página lógica</strong> del programa en ese instante.
-                        </p>
-                    </div>
-                    <div class="card-mini" style="border-left: 3px solid var(--warning); background-color: #111827; padding: 1.5rem;">
-                        <h4>📐 Concepto de Segmentación</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-top: 0.5rem;">
-                            A diferencia de la paginación (que divide todo a ciegas en bloques idénticos), la segmentación divide el programa según su <strong>estructura lógica</strong> (un segmento para el código principal, otro para las funciones, otro para las variables). Cada segmento mide exactamente lo que ocupa su contenido.
-                        </p>
-                    </div>
-                </div>
-
             </section>
 
-                       <!-- SECCIÓN 4: MEMORIA VIRTUAL -->
+            <!-- SECCIÓN 4: MEMORIA VIRTUAL -->
             <section id="memoria-virtual" class="section">
-                <h1>4. Memoria Virtual y Técnicas de Reemplazo</h1>
-                <p class="subtitle">Desacopla el espacio de direcciones del programa de la memoria física real, permitiendo que los procesos superen la capacidad de la RAM instalada.</p>
-                <div class="swap-graphic-container">
-                    <h4>Flujo Operativo de Paginación por Demanda e Intercambio</h4>
+                <h1>4. Sistemas Avanzados de Memoria Virtual</h1>
+                <p class="subtitle">Abstracción que desasocia el espacio de direcciones lógico de la capacidad física del hardware real.</p>
+                
+                <div class="info-block border-cyan" style="margin-bottom: 2rem; background-color: #111827; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem;">
+                    <div>
+                        <h3>💽 ¿Qué es la Memoria Virtual?</h3>
+                        <p style="font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-top: 0.5rem;">
+                            La <strong>Memoria Virtual</strong> permite ejecutar programas cuyo tamaño supera la memoria RAM instalada mediante <strong>Paginación por Demanda</strong>. Las páginas se transfieren únicamente al usarse.
+                        </p>
+                    </div>
+                    <button onclick="triggerInteractivePageFault()" class="btn-primary" style="background-color: #ea580c; color: #fff; white-space: nowrap;">💥 Inyectar Page Fault</button>
+                </div>
+
+
+                <!-- Contenedor animado para el Page Fault -->
+                <div id="page-fault-visual-board" class="swap-graphic-container" style="transition: background-color 0.5s ease;">
+                    <h4 id="page-fault-status-text">Demostración Interactiva de Intercambio</h4>
                     <div class="swap-flow">
-                        <div class="storage-node node-ram">📂 Memoria RAM Física <br> <small>(Páginas Activas)</small></div>
+                        <div class="storage-node node-ram" id="virtual-ram-node">📂 Memoria RAM Física</div>
                         <div class="swap-arrows">
-                            <div class="arrow-up">Page-In (Carga) ⬆️</div>
-                            <div class="arrow-down">⬇️ Page-Out (Desalojo)</div>
+                            <div class="arrow-up" id="arrow-page-in" style="transition: transform 0.3s;">Page-In (Carga) ⬆️</div>
+                            <div class="arrow-down" id="arrow-page-out" style="transition: transform 0.3s;">⬇️ Page-Out (Desalojo)</div>
                         </div>
-                        <div class="storage-node node-disk">💽 Archivo de Intercambio (SWAP / SSD) <br> <small>(Páginas Inactivas)</small></div>
+                        <div class="storage-node node-disk" id="virtual-disk-node">💽 Espacio SWAP / SSD</div>
                     </div>
                 </div>
+
                 <div class="alert-box">
-                    <strong>🚨 Hiperpaginación (Thrashing):</strong> Fenómeno crítico que ocurre cuando la RAM está tan saturada que el sistema operativo pasa el 99% de sus ciclos de reloj leyendo y escribiendo páginas en el disco duro, dejando a la CPU sin capacidad de cómputo efectivo.
+                    <strong>🚨 Fenómeno de Hiperpaginación (Thrashing):</strong> Estado catastrófico del sistema que ocurre cuando la memoria RAM está tan saturada que el procesador pasa el 99% de su tiempo leyendo y escribiendo páginas en el disco duro.
                 </div>
-                <div class="split" style="margin-bottom: 2rem;">
-                    <div class="info-block border-cyan" style="background-color: #111827;">
-                        <h3>📊 Políticas de Asignación de Marcos</h3>
-                        <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
-                            • <strong>Asignación Local:</strong> Cuando un proceso sufre un fallo de página, solo puede seleccionar una página víctima de entre sus propios marcos asignados.<br><br>
-                            • <strong>Asignación Global:</strong> El proceso puede tomar un marco libre de cualquier parte de la RAM, incluso de otro proceso. Es más eficiente pero puede desestabilizar a los demás programas.
-                        </p>
-                    </div>
-                    <div class="info-block border-blue" style="background-color: #111827;">
-                        <h3>⚙️ Modelo del Conjunto de Trabajo (Working Set)</h3>
-                        <p style="margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
-                            Es el método utilizado para mitigar la hiperpaginación. El SO define un parámetro <em>Δ (ventana de tiempo)</em> y monitorea qué páginas necesita el proceso activamente en ese lapso. Si la suma de los conjuntos de trabajo supera la RAM física real, el sistema suspende temporalmente un proceso para evitar el colapso.
-                        </p>
-                    </div>
-                </div>
+
                 <div class="grid">
-                    <div class="card"><h3>💾 Paginación por Demanda</h3><p>Las páginas de un ejecutable no se cargan por completo al iniciar el programa; se transfieren a la RAM únicamente cuando el procesador intenta leer o escribir en ellas.</p></div>
-                    <div class="card"><h3>⚠️ Fallo de Página (Page Fault)</h3><p>Excepción lanzada por la MMU cuando la CPU solicita una página cuyo bit de presencia es "0". Obliga al sistema operativo a buscar la página en el almacenamiento secundario y cargarla en la RAM.</p></div>
+                    <div class="card">
+                        <h3>⚠️ Fallo de Página (Page Fault)</h3>
+                        <p>Interrupción de hardware lanzada por la MMU cuando la CPU solicita una dirección virtual cuyo bit de presencia en la tabla está en cero. Detiene el proceso, busca la página en el almacenamiento masivo y la aloja en la RAM física.</p>
+                    </div>
+                    <div class="card">
+                        <h3>⚙️ Modelo del Conjunto de Trabajo</h3>
+                        <p>Estrategia matemática (Working Set Model) para mitigar el Thrashing. Monitorea activamente qué páginas necesita un proceso en una ventana de tiempo virtual Delta (Δ). Si los conjuntos sumados superan la RAM física, suspende procesos preventivamente.</p>
+                    </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN 5: DISEÑOS AVANZADOS Y CACHÉ -->
+                        <!-- SECCIÓN 5: ALGORITMOS DE REEMPLAZO -->
+            <section id="algoritmos-reemplazo" class="section">
+                <h1>5. Algoritmos de Reemplazo de Páginas</h1>
+                <p class="subtitle">Estrategias del Kernel para seleccionar qué página víctima expulsar al disco cuando la RAM física está al 100% de su capacidad.</p>
+                
+                <div class="grid">
+                    <!-- Tarjeta 1: FIFO -->
+                    <div class="card">
+                        <h3>🕒 FIFO (First-In, First-Out)</h3>
+                        <p>Desaloja la página que lleva más tiempo guardada en la RAM física, sin importar su frecuencia de uso. Sufre de la <strong>Anomalía de Belady</strong>: darle más marcos físicos al sistema puede provocar irónicamente un incremento en los fallos de página.</p>
+                    </div>
+
+                    <!-- Tarjeta 2: LRU -->
+                    <div class="card">
+                        <h3>🎯 LRU (Least Recently Used)</h3>
+                        <p>Expulsa la página que ha permanecido sin ser accedida por el procesador durante el mayor período de tiempo. Se basa en el principio de localidad temporal, siendo altamente eficiente pero costoso de implementar en hardware puro.</p>
+                    </div>
+
+                    <!-- Tarjeta 3: Algoritmo del Reloj -->
+                    <div class="card">
+                        <h3>⏰ Algoritmo del Reloj (Segunda Oportunidad)</h3>
+                        <p>Implementación circular de FIFO de bajo costo. Utiliza una aguja examinadora y un bit de referencia por marco. Si el bit está en 1, le da una segunda oportunidad poniéndolo en 0; si está en 0, desaloja esa página inmediatamente.</p>
+                    </div>
+
+                    <!-- Tarjeta 4: Algoritmo Óptimo con formato HTML corregido -->
+                    <div class="card" style="border: 1px solid #34d399; background: linear-gradient(135deg, #111827 0%, #064e3b 100%);">
+                        <h3>👑 Algoritmo Óptimo (OPT)</h3>
+                        <p>Reemplaza la página que <strong>tardará más tiempo en volver a ser utilizada</strong> en el futuro. Consigue el número más bajo posible de fallos de página. Es <strong>inviable en la práctica</strong> (irrealizable) porque requiere conocer el futuro, pero sirve como el estándar perfecto para evaluar el rendimiento de los demás algoritmos.</p>
+                    </div>
+
+                </div>
+            </section>
+
+
+                       <!-- SECCIÓN 6: DISEÑOS AVANZADOS -->
             <section id="disenos-avanzados" class="section">
-                <h1>5. Diseños Avanzados de Sistemas de Paginación y Memoria Caché</h1>
-                <p class="subtitle">Para optimizar el rendimiento y evitar que la CPU sufra retrasos esperando datos, los sistemas modernos implementan estructuras jerárquicas y hardware especializado:</p>
+                <h1>6. Diseños Avanzados de los Sistemas de Paginación y Caché</h1>
+                <p class="subtitle">Optimizaciones a gran escala para manejar gigabytes de datos sin sobrecargar las estructuras internas del procesador.</p>
+                
                 <div class="info-block border-blue" style="margin-bottom: 2rem;">
-                    <h3>⚡ ¿Qué es la Memoria Caché?</h3>
-                    <p style="margin-bottom: 1rem; color: var(--text-main); font-size: 1.05rem; line-height: 1.6;">
-                        Es una memoria ultrarrápida de acceso aleatorio integrada en el procesador. Su objetivo básico es almacenar copias de las instrucciones y datos de la memoria RAM que la CPU probablemente utilizará en los próximos ciclos, reduciendo drásticamente el tiempo de espera del hardware.
+                    <h3>⚡ Arquitectura de Memoria Caché</h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1rem;">
+                        Memoria estática ultrarrápida integrada en el encapsulado físico de la CPU para evitar la lentitud del bus de la RAM principal:
                     </p>
                     <div class="concept-box" style="background-color: #111827;">
-                        <strong>Niveles de Caché (Jerarquía):</strong><br>
-                        • <strong>L1 (Internal Cache):</strong> La más rápida y pequeña (KB), opera a la misma velocidad del núcleo de la CPU.<br>
-                        • <strong>L2 (External Cache):</strong> Un poco más grande pero ligeramente más lenta que L1, sirve de puente intermedio.<br>
-                        • <strong>L3 (Shared Cache):</strong> Mucho más grande (MB) y compartida dinámicamente entre todos los núcleos del procesador.
+                        • <strong>Caché L1 Interna:</strong> Dividida en instrucciones y datos, trabaja a la misma frecuencia de reloj del núcleo de procesamiento.<br>
+                        • <strong>Caché L2 Dedicada:</strong> Bloque intermedio de almacenamiento con mayor capacidad pero ligera penalización de acceso.<br>
+                        • <strong>Caché L3 Compartida:</strong> Almacén de gran tamaño en megabytes compartida dinámicamente entre todos los núcleos de la CPU.
                     </div>
                 </div>
+
                 <div class="grid">
-                    <div class="card"><h3>🌳 Tablas de Páginas Multinivel</h3><p>Estructura organizada en árbol donde una tabla raíz apunta a subtablas. Esto permite mantener cargadas en RAM únicamente las regiones de la tabla activas del proceso.</p></div>
-                    <div class="card"><h3>🙃 Paginación Invertida</h3><p>El sistema operativo implementa una única tabla global con una entrada por cada marco físico real de la RAM en lugar de una tabla por cada proceso, ahorrando espacio.</p></div>
+                    <div class="card">
+                        <h3>🌳 Tablas de Páginas Multinivel</h3>
+                        <p>Estructura jerárquica en árbol (como las tablas de dos niveles). Evita mapear todo el espacio virtual de golpe, manteniendo cargadas en la RAM física exclusivamente las subtablas activas del proceso, ahorrando gigabytes de espacio en el Kernel.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🙃 Paginación Invertida</h3>
+                        <p>En lugar de crear una tabla de páginas por cada proceso activo, el sistema operativo implementa una única tabla global para todo el sistema, con una entrada por cada marco físico real de la RAM, reduciendo el consumo de memoria del SO.</p>
+                    </div>
                 </div>
-                                <!-- BLOQUE DE HARDWARE TLB (CORREGIDO Y CON MARGEN DE SALIDA) -->
+
                 <div class="info-block border-cyan" style="margin-top: 2rem; margin-bottom: 2rem;">
                     <h3>⚡ TLB (Translation Lookaside Buffer)</h3>
                     <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
-                        Una memoria caché asociativa de hardware de velocidad extrema integrada en la MMU de la CPU. Almacena las traducciones de direcciones virtuales a físicas más recientes para evitar consultar constantemente las tablas de páginas ubicadas en la memoria RAM principal, acelerando el rendimiento general.
+                        Una memoria caché asociativa de hardware de velocidad extrema integrada en la MMU. Almacena las traducciones de direcciones virtuales a físicas más recientes. Si ocurre un <strong>TLB Hit</strong>, la traducción es instantánea; si ocurre un <strong>TLB Miss</strong>, se debe buscar manualmente en la RAM, ralentizando el ciclo.
                     </p>
                 </div>
+
             </section>
 
-
-            <!-- SECCIÓN 6: SIMULADOR INTERACTIVO PRO -->
+            <!-- SECCIÓN 7: SIMULADOR RAM INTERACTIVO -->
             <section id="simulador" class="section">
                 <h1>Simulador Interactivo de Asignación Pro</h1>
                 <p class="subtitle" style="margin-bottom: 2rem;">Experimenta cómo los diferentes algoritmos ubican los procesos y cómo la desfragmentación o compactación manual resuelve los problemas de espacio.</p>
-                                <!-- Conceptos Académicos de los Algoritmos -->
                 <div class="grid-3" style="margin-bottom: 2.5rem;">
                     <div class="card-mini" style="border-top: 3px solid var(--accent); background-color: #111827;">
                         <h4>🔍 First-Fit (Primer Ajuste)</h4>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-                            Recorre la memoria desde el inicio y aloja el proceso en el <strong>primer hueco libre</strong> que sea suficiente. Es el más veloz porque detiene la búsqueda de inmediato.
-                        </p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Recorre la memoria desde el inicio y aloja el proceso en el <strong>primer hueco libre</strong> que sea suficiente. Es el más veloz porque detiene la búsqueda de inmediato.</p>
                     </div>
                     <div class="card-mini" style="border-top: 3px solid var(--success); background-color: #111827;">
                         <h4>🎯 Best-Fit (Mejor Ajuste)</h4>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-                            Examina toda la lista de espacios y selecciona el <strong>hueco libre más pequeño</strong> capaz de albergar al proceso. Su meta es conservar bloques grandes.
-                        </p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Examina toda la lista de espacios y selecciona el <strong>hueco libre más pequeño</strong> capaz de albergar al proceso. Su meta es conservar bloques grandes.</p>
                     </div>
                     <div class="card-mini" style="border-top: 3px solid var(--warning); background-color: #111827;">
                         <h4>⚖️ Worst-Fit (Peor Ajuste)</h4>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
-                            Recorre la memoria para encontrar y elegir el <strong>hueco libre más gigantesco</strong> disponible. Su filosofía es dejar un espacio restante útil.
-                        </p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">Recorre la memoria para encontrar y elegir el <strong>hueco libre más gigantesco</strong> disponible. Su filosofía es dejar un espacio restante útil.</p>
                     </div>
                 </div>
-
-                <!-- Dashboard del Simulador (Estructura Original Recuperada al 100%) -->
                 <div class="simulator-layout">
                     <!-- Panel de Controles -->
                     <div class="controls-panel">
@@ -273,16 +310,17 @@
                                 <input type="number" id="proc-size" placeholder="10 - 300" min="10" max="300">
                             </div>
                         </div>
-                        <!-- Botón Principal -->
-                        <button onclick="addProcess()" class="btn-primary" style="width: 100%; margin-bottom: 0.75rem;">Asignar Proceso</button>
-                        <!-- Botones Secundarios con Ancho Controlado para no deformar la grilla -->
-                        <div style="display: flex; gap: 1rem; width: 100%; max-width: 100%;">
-                            <button onclick="compactMemory()" class="btn-secondary" style="flex: 1; min-width: 0; padding: 0.85rem 0.5rem;">⚙️ Compactar</button>
-                            <button onclick="resetSimulator()" class="btn-secondary" style="flex: 1; min-width: 0; padding: 0.85rem 0.5rem; background-color: #dc2626; color: white;">🔄 Reiniciar</button>
+                        <!-- Bloque de acciones unificado -->
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                            <button onclick="addProcess()" class="btn-primary" style="width: 100%;">Asignar Proceso</button>
+                            <div style="display: flex; gap: 1rem; width: 100%;">
+                                <button onclick="compactMemory()" class="btn-secondary" style="flex: 1; min-width: 0; padding: 0.85rem 0.5rem;">⚙️ Compactar</button>
+                                <button onclick="resetSimulator()" class="btn-secondary" style="flex: 1; min-width: 0; padding: 0.85rem 0.5rem; background-color: #dc2626; color: white;">🔄 Reiniciar</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Panel de Estadísticas Original (Volverá a verse completo) -->
+                    <!-- Panel de Estadísticas Original a la Derecha -->
                     <div class="stats-panel">
                         <div class="stat-card">
                             <span class="stat-label">RAM Usada:</span>
@@ -294,40 +332,31 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Contenedor Visual de la RAM -->
                 <div class="ram-container">
-                    <div class="ram-header">
-                        <h3>Mapa de Memoria Principal (RAM Física - 500 MB)</h3>
-                        <span class="tooltip-info">💡 Haz clic sobre un bloque verde para liberarlo</span>
-                    </div>
+                    <div class="ram-header"><h3>Mapa de Memoria Principal (RAM Física - 500 MB)</h3><span class="tooltip-info">💡 Haz clic sobre un bloque verde para liberarlo</span></div>
                     <div class="ram-bar" id="ram-bar"></div>
                 </div>
-
-                <!-- Bitácora de Eventos de la MMU -->
                 <div class="mmu-log-container" style="margin-top: 1.5rem;">
                     <h4>📋 Historial de Eventos de la MMU</h4>
-                    <div id="mmu-log-board">
-                        <div class="log-entry system-node">🧠 Sistema operativo inicializado. Memoria RAM de 500MB lista.</div>
-                    </div>
+                    <div id="mmu-log-board"><div class="log-entry system-node">🧠 Sistema operativo inicializado. Memoria RAM de 500MB lista.</div></div>
                 </div>
             </section>
 
-                        <!-- SECCIÓN 7: QUIZ INTERACTIVO POR NIVELES -->
+            <!-- SECCIÓN 8: DESAFÍO DE NIVELES -->
             <section id="quiz-pestaña" class="section">
                 <h1>🏆 Desafío de Gestión de Memoria</h1>
                 <p class="subtitle" style="margin-bottom: 2rem;">Pon a prueba tus conocimientos sobre sistemas operativos. Responde las preguntas y recibe feedback instantáneo.</p>
-                
                 <div class="quiz-container-box">
                     <div class="quiz-score-board">
                         <div>Progreso: <strong id="quiz-progress">1/12</strong></div>
                         <div>Puntuación: <strong id="quiz-score">0</strong></div>
                     </div>
-                    <!-- Aquí adentro el JavaScript inyectará las preguntas perfectamente alineadas -->
                     <div id="quiz-card-content" style="margin-top: 1.5rem;"></div>
                 </div>
             </section>
-
+        </main>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
+

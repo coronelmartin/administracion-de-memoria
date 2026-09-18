@@ -128,27 +128,18 @@ function compactMemory() {
     showNotification('⚙️ <strong>Memoria RAM compactada</strong>', 'success');
     logMMUEvent(`ÉXITO: Bloques libres unificados en un único vector contiguo de ${totalFreeSize}MB.`, 'success');
 }
+
 function resetSimulator() {
-    // Restablece el mapa de memoria a sus 500 MB libres originales
     ramMap = [{ id: null, name: 'Libre', size: TOTAL_RAM, used: false }];
-    
-    // Limpia los campos de texto
     document.getElementById('proc-name').value = '';
     document.getElementById('proc-size').value = '';
-    
-    // Reinicia la interfaz visual de la RAM y estadísticas
     updateRamUI();
-    
-    // Vacía la bitácora de la MMU y deja solo el mensaje inicial
     const board = document.getElementById('mmu-log-board');
     if (board) {
         board.innerHTML = '<div class="log-entry system-node">🧠 Sistema operativo reinicializado. Memoria RAM de 500MB limpia y vacía.</div>';
     }
-    
-    // Muestra alerta flotante de éxito
     showNotification('🔄 El simulador de hardware ha sido restablecido a cero.', 'success');
 }
-
 
 // --- QUIZ POR NIVELES (12 PREGUNTAS) ---
 const quizData = [
@@ -184,7 +175,6 @@ function renderQuizQuestion() {
     let opts = ''; 
     q.options.forEach((o, i) => opts += `<button class="quiz-opt-btn" onclick="checkQuizAnswer(${i})">${o}</button>`);
     
-    // Aquí estructuramos el diseño idéntico: el nivel con un color llamativo y la pregunta abajo limpia
     cardContent.innerHTML = `
         <div style="margin-bottom: 0.75rem; color: #38bdf8; font-weight: bold; font-size: 0.95rem;">Nivel Actual: ${q.level}</div>
         <div class="quiz-question-text" style="margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700; line-height: 1.4;">${q.question}</div>
@@ -192,7 +182,6 @@ function renderQuizQuestion() {
         <div id="quiz-feedback-target"></div>
     `;
 }
-
 
 function checkQuizAnswer(selectedIdx) {
     const q = quizData[currentQuestionIndex]; const buttons = document.getElementById('options-block').children;
@@ -204,4 +193,53 @@ function checkQuizAnswer(selectedIdx) {
 function nextQuizQuestion() { currentQuestionIndex++; renderQuizQuestion(); }
 function restartQuiz() { currentQuestionIndex = 0; userScore = 0; renderQuizQuestion(); }
 
+// --- FUNCIONES INTERACTIVAS PARA LA ENCICLOPEDIA ---
+function simulateMmuTranslation(logicalName, physicalName, type) {
+    const cpu = document.getElementById('interactive-cpu');
+    const mmu = document.getElementById('interactive-mmu');
+    const ram = document.getElementById('interactive-ram');
+    if(!cpu || !mmu || !ram) return;
+
+    cpu.style.backgroundColor = '#3b82f6';
+    setTimeout(() => {
+        mmu.style.backgroundColor = '#ea580c';
+        setTimeout(() => {
+            ram.style.backgroundColor = '#10b981';
+            setTimeout(() => {
+                cpu.style.backgroundColor = '#1e2937';
+                mmu.style.backgroundColor = '#7c2d12';
+                ram.style.backgroundColor = '#064e3b';
+            }, 600);
+        }, 300);
+    }, 300);
+    showNotification(`🧠 <strong>MMU Traduciendo:</strong> Convirtiendo la dirección lógica de [${logicalName}] en la celda física [${physicalName}].`, 'success');
+}
+
+function triggerInteractivePageFault() {
+    const board = document.getElementById('page-fault-visual-board');
+    const statusText = document.getElementById('page-fault-status-text');
+    const ramNode = document.getElementById('virtual-ram-node');
+    const diskNode = document.getElementById('virtual-disk-node');
+    if(!board || !statusText || !ramNode || !diskNode) return;
+
+    board.style.backgroundColor = 'rgba(220, 38, 38, 0.15)';
+    statusText.innerText = '🚨 ¡FALLO DE PÁGINA DETECTADO! Buscando en SWAP...';
+    diskNode.style.borderColor = '#ea580c';
+    diskNode.style.backgroundColor = '#7c2d12';
+
+    setTimeout(() => {
+        statusText.innerText = '⏳ Page-In: Transfiriendo bloques a la memoria principal RAM...';
+        ramNode.style.backgroundColor = '#10b981';
+        setTimeout(() => {
+            board.style.backgroundColor = '#0c1322';
+            statusText.innerText = 'Demonstración Interactiva de Intercambio';
+            ramNode.style.backgroundColor = '#065f46';
+            diskNode.style.backgroundColor = '#111827';
+            diskNode.style.borderColor = '#4b5563';
+            showNotification('✅ Fallo de página resuelto. Proceso cargado en RAM de forma no contigua.', 'success');
+        }, 1500);
+    }, 1200);
+}
+
+// Inicializadores
 updateRamUI(); renderQuizQuestion();
