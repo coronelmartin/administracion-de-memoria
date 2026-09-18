@@ -10,7 +10,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// --- FUNCIÓN PARA MOSTRAR ALERTAS MODERNAS EN PANTALLA (TOASTS) ---
+// --- FUNCIÓN PARA MOSTRAR ALERTAS EN PANTALLA ---
 function showNotification(message, type = 'error') {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -165,7 +165,7 @@ function renderQuizQuestion() {
         let badge = "🥈"; let title = "Administrador Junior";
         if(userScore === quizData.length) { badge = "👑🥇"; title = "Arquitecto Supremo del Kernel (100%)"; }
         else if(userScore >= 8) { badge = "🥇"; title = "Ingeniero Avanzado"; }
-        cardContent.innerHTML = `<div style="text-align:center;"><div class="badge-display">${badge}</div><h3>${title}</h3><p style="margin-top:0.5rem;">Puntuación final: <strong>${Math.round((userScore/quizData.length)*100)}/100 puntos</strong></p><button onclick="restartQuiz()" class="btn-secondary" style="margin-top:1.5rem;">🔄 Reiniciar Desafío</button></div>`;
+        cardContent.innerHTML = `<div style="text-align:center;"><div class="badge-display">${badge}</div><h3>${title}</h3><p style="margin-top:0.5rem;">Puntuación final: <strong>${Math.round((userScore/quizData.length)*100)}/100 puntos</strong></p><button onclick="restartQuiz()" class="btn-secondary" style="margin-top:1rem;">🔄 Reiniciar Desafío</button></div>`;
         return;
     }
     const q = quizData[currentQuestionIndex];
@@ -193,7 +193,32 @@ function checkQuizAnswer(selectedIdx) {
 function nextQuizQuestion() { currentQuestionIndex++; renderQuizQuestion(); }
 function restartQuiz() { currentQuestionIndex = 0; userScore = 0; renderQuizQuestion(); }
 
-// --- FUNCIONES INTERACTIVAS PARA LA ENCICLOPEDIA ---
+
+// --- 🛠️ NUEVAS FUNCIONES INTERACTIVAS CON PAUSAS DE LECTURA FIJAS ---
+
+// 1. Inyección de Alerta Académica con Botón de Cierre Manual
+function injectPersistentAlert(htmlMessage) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    
+    const activeAlert = document.querySelector('.persistent-explain-alert');
+    if (activeAlert) activeAlert.remove();
+
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'toast-notification toast-success persistent-explain-alert';
+    alertDiv.style.width = '380px';
+    alertDiv.style.borderLeft = '5px solid #38bdf8';
+    
+    alertDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+            <div style="font-size: 0.9rem; line-height: 1.5; color: #fff;">${htmlMessage}</div>
+            <button onclick="this.closest('.persistent-explain-alert').remove()" style="background: none; border: none; color: #9ca3af; font-size: 1.1rem; cursor: pointer; padding: 0; font-weight: bold;">✖</button>
+        </div>
+    `;
+    container.appendChild(alertDiv);
+}
+
+// 2. Traducción en Cámara Lenta por Etapas (CPU -> MMU -> RAM)
 function simulateMmuTranslation(logicalName, physicalName, type) {
     const cpu = document.getElementById('interactive-cpu');
     const mmu = document.getElementById('interactive-mmu');
@@ -201,20 +226,37 @@ function simulateMmuTranslation(logicalName, physicalName, type) {
     if(!cpu || !mmu || !ram) return;
 
     cpu.style.backgroundColor = '#3b82f6';
+    cpu.style.transform = 'scale(1.05)';
+    
     setTimeout(() => {
+        cpu.style.transform = 'scale(1)';
         mmu.style.backgroundColor = '#ea580c';
+        mmu.style.transform = 'scale(1.05)';
+        
         setTimeout(() => {
+            mmu.style.transform = 'scale(1)';
             ram.style.backgroundColor = '#10b981';
+            ram.style.transform = 'scale(1.05)';
+            
             setTimeout(() => {
+                ram.style.transform = 'scale(1)';
                 cpu.style.backgroundColor = '#1e2937';
                 mmu.style.backgroundColor = '#7c2d12';
                 ram.style.backgroundColor = '#064e3b';
-            }, 600);
-        }, 300);
-    }, 300);
-    showNotification(`🧠 <strong>MMU Traduciendo:</strong> Convirtiendo la dirección lógica de [${logicalName}] en la celda física [${physicalName}].`, 'success');
+            }, 800);
+        }, 700);
+    }, 700);
+
+    const explanation = `
+        <strong>📋 Bitácora de Traducción MMU:</strong><br><br>
+        • <strong>CPU:</strong> Solicitó el bloque lógico virtual <em>"${logicalName}"</em>.<br>
+        • <strong>MMU:</strong> Interceptó la línea del bus y buscó el mapeo indexado en la Tabla de Páginas corporativa.<br>
+        • <strong>RAM:</strong> Encontró que apuntaba de forma física a la celda real <em>"${physicalName}"</em>. ¡Dirección concedida!
+    `;
+    injectPersistentAlert(explanation);
 }
 
+// 3. Simulación Pausada de Fallo de Página (Swap de Datos Completo)
 function triggerInteractivePageFault() {
     const board = document.getElementById('page-fault-visual-board');
     const statusText = document.getElementById('page-fault-status-text');
@@ -222,24 +264,37 @@ function triggerInteractivePageFault() {
     const diskNode = document.getElementById('virtual-disk-node');
     if(!board || !statusText || !ramNode || !diskNode) return;
 
-    board.style.backgroundColor = 'rgba(220, 38, 38, 0.15)';
-    statusText.innerText = '🚨 ¡FALLO DE PÁGINA DETECTADO! Buscando en SWAP...';
+    board.style.backgroundColor = 'rgba(220, 38, 38, 0.2)';
+    statusText.innerText = '🚨 ¡FALLO DE PÁGINA! La MMU detectó bit de presencia en cero.';
     diskNode.style.borderColor = '#ea580c';
     diskNode.style.backgroundColor = '#7c2d12';
 
     setTimeout(() => {
-        statusText.innerText = '⏳ Page-In: Transfiriendo bloques a la memoria principal RAM...';
-        ramNode.style.backgroundColor = '#10b981';
+        statusText.innerText = '💽 Leyendo del Disco: Localizando la página víctima en el bloque de SWAP...';
+        
         setTimeout(() => {
-            board.style.backgroundColor = '#0c1322';
-            statusText.innerText = 'Demonstración Interactiva de Intercambio';
-            ramNode.style.backgroundColor = '#065f46';
-            diskNode.style.backgroundColor = '#111827';
-            diskNode.style.borderColor = '#4b5563';
-            showNotification('✅ Fallo de página resuelto. Proceso cargado en RAM de forma no contigua.', 'success');
+            statusText.innerText = '⏳ Page-In: Transfiriendo bytes por ráfaga hacia un marco libre en la RAM...';
+            ramNode.style.backgroundColor = '#10b981';
+            
+            setTimeout(() => {
+                board.style.backgroundColor = '#0c1322';
+                statusText.innerText = 'Demostración Interactiva de Intercambio';
+                ramNode.style.backgroundColor = '#065f46';
+                diskNode.style.backgroundColor = '#111827';
+                diskNode.style.borderColor = '#4b5563';
+            }, 1500);
         }, 1500);
-    }, 1200);
+    }, 1500);
+
+    const explanation = `
+        <strong>🚨 Bitácora de Excepción (Page Fault):</strong><br><br>
+        1. <strong>MMU Miss:</strong> El proceso pidió una página que no estaba cargada en los marcos físicos de la RAM.<br>
+        2. <strong>Trap al Kernel:</strong> El hardware congeló el hilo de ejecución actual y llamó al manejador de fallos del SO.<br>
+        3. <strong>E/S Disco:</strong> Se leyó el bloque del SSD/SWAP y se volcó en la RAM. ¡Bit de presencia actualizado a 1!
+    `;
+    injectPersistentAlert(explanation);
 }
 
-// Inicializadores
+// Inicializadores Básicos
 updateRamUI(); renderQuizQuestion();
+
